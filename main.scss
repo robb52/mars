@@ -11,10 +11,10 @@
     --fw-normal: 400;
     --fw-semi: 500;
     --fw-bold: 700;
-    --fs-h1: 1.5rem;
-    --fs-h2: 2.25rem;
+    --fs-h1: 1.25rem;
+    --fs-h2: 1.75rem;
     --fs-body: 1rem;
-    --fs-xl: 4.5rem;
+    --fs-xl: 4rem;
     --clr-light: #fff;
     --clr-gray: #989898;
     --clr-dark: #444;
@@ -37,9 +37,8 @@ body {
     font-family: 'Montserrat', sans-serif;
     line-height: 1.6;
     background-image: url(img/mars.jpg);
-    height: 100vh;
-    overflow: hidden;
     color: var(--clr-light);
+    min-height: 100vh;
 }
 
 h1, h2, h3 { 
@@ -82,13 +81,9 @@ a:hover {
 
 .mars-current-weather {
     background: rgba(0,0,0,.7);
-    padding: 2em;
+    padding: 6em 2em 2em;
     max-width: 1000px;
-    margin: 4em 0 0 4em;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 2em;
-   
+    margin: 1em;
 }
 
 .date {
@@ -104,39 +99,37 @@ a:hover {
 
 .temp {
     --border: solid .25em var(--clr-accent-dark);
-    grid-column: 2 / 3;
-    border-left: var(--border);
-    border-right: var(--border);
-    padding: 0 2em;
+    padding: 2em 0;
 }
 
 .wind {
-    grid-column: 3 /4;
+    column-gap: 1em;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: min-content 1fr;
     grid-template-rows: min-content 1fr;
     align-self: start;
 }
 
 .section-title,
 .reading {
-    grid-column: 2 /3;
+    grid-column: 1 / 2;
 }
 
 .wind__direction {
-    --size: 6rem;
+    --size: 4rem;
     width: var(--size);
     height: var(--size);
     border-radius: 50%;;
     background-color: rgba(255,255,255,.5);
     display: grid;
     place-items: center;
+    grid-column: 2 / 3;
     grid-row: 1 /span 2;
 }
 
 .wind__arrow {
     --direction: 0deg;
-    --size: 1rem;
+    --size: .65rem;
     height: calc(var(--size) * 3);
     width: var(--size);
     background-color: var(--clr-accent-dark);
@@ -199,4 +192,180 @@ input {
 
 :checked ~ .unit__toggle::after {
     margin-left: 3px;
+}
+
+.previous-weather {
+    display: none;
+    background: var(--clr-light);
+    color: var(--clr-dark);
+    position: absolute;
+    width: 100%;
+    transform: translateY(60%);
+    transition: transform 350ms ease;
+    padding: 3rem;
+}
+
+.show-previous-weather {
+    position: absolute;
+    background: var(--clr-light);
+    left: 50%;
+    width: 10rem;
+    transform: translate(-50%, calc(-100% - 3rem));
+    text-align: center;
+    font-size: var(--fs-h2);
+    line-height: 1;
+    clip-path: polygon(50% 0, 0 100%, 100% 100%);
+    cursor: pointer;
+    color: var(--clr-gray);
+    border: 0;
+    font-family: inherit;
+}
+
+.show-previous-weather span {
+    display: block;
+    transform: rotate(0);
+    transition: transform 300ms ease;
+}
+
+.show-previous-weather:hover,
+.show-previous-weather:focus {
+    color: var(--clr-dark);
+}
+
+.previous-weather__title {
+    text-align: center;
+}
+
+.previous-days {
+    display: flex;
+    justify-content: space-between;
+}
+
+.previous-day {
+    opacity: 1;
+    transition: opacity 350ms linear;
+    animation: slideUpIn 500ms;
+}
+
+.previous-day__more-info {
+    cursor: pointer;
+    border: 0;
+    border-radius: 100vmax;
+    background: var(--clr-dark);
+    color: var(--clr-light);
+    text-transform: uppercase;
+    padding: .3em 1em;
+    margin-top: 1em;
+}
+
+.previous-day__more-info:hover {
+    background: var(--clr-gray);
+}
+
+.show-weather.previous-weather {
+    transform: translateY(0);
+    margin-top: 5em;
+}
+
+.show-weather.previous-weather span {
+    display: block;
+    transform: rotate(180deg) translateY(-6px);
+}
+
+@keyframes slideUpIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 600px) {
+    .mars-current-weather {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 2em;
+        display: grid;
+    }
+
+    .date {
+        grid-column: 1 / -1;
+    }
+
+    .temp {
+        grid-column: 1 / 2;
+        padding: 0;
+    }
+
+    .wind {
+        grid-column: 2 /3;
+    }
+}
+
+
+@media (min-width: 900px) {
+    :root {
+        --fs-h1: 1.5rem;
+        --fs-h2: 2.25rem;
+        --fs-body: 1rem;
+        --fs-xl: 4.5rem;
+    }
+
+    body {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .date {
+        grid-column: 1 / 2;
+    }
+
+    .mars-current-weather {
+        padding: 2em;
+        margin: 4em 4em 0 4em;
+        grid-template-columns: repeat(3, 1fr);
+        grid-gap: 2em;
+    }
+
+    .temp {
+        grid-column: 2 / 3;
+        border-left: var(--border);
+        border-right: var(--border);
+        padding: 0 2em;
+    }
+
+    .wind {
+        grid-column: 3 /4;
+        .section-title,
+        .reading {
+            grid-column: 2 /3;
+        }
+    }
+
+    .wind__direction {
+        --size: 6rem;
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;;
+        background-color: rgba(255,255,255,.5);
+        display: grid;
+        place-items: center;
+        grid-column: 1 / 2;
+        grid-row: 1 /span 2;
+    }
+
+    .wind__arrow {
+        --size: 1rem;
+    }
+}
+
+@media (max-width: 900px) {
+    .unit {
+        position: absolute;
+        left: 2em;
+        top: 2em;
+    }
 }
